@@ -11,41 +11,51 @@ class PlayVoice:
     def __init__(self, master):
 
         self.master = master
-        self.selected_time=10
+        self.selected_time = 3
         self.master.protocol("WM_DELETE_WINDOW", self.close)
 
-        # select_button = Button(self.master, text='Select', width='10', command=self.select_time)
-        # select_button.grid(row=2, column=3)
+        self.select_button = Button(self.master, text='Select', width='10', command=self.select_time)
+        self.select_button.grid(row=2, column=3)
 
-        start_button = Button(self.master, text='Start', width='10', command=self.start_voice)
-        start_button.grid(row=3, column=3)
+        self.start_button = Button(self.master, text='Start', width='10', command=self.start_voice)
+        self.start_button.grid(row=3, column=3)
 
-        stop_button = Button(self.master, text='Stop', width='10', command=self.stop_voice)
+        self.stop_button = Button(self.master, text='Stop', width='10', command=self.stop_voice)
 
-        stop_button.grid(row=4, column=3)
+        self.stop_button.grid(row=4, column=3)
 
-        quite_button = Button(self.master, text='Quite', width='10', command=self.close_my_app)
-        quite_button.grid(row=5, column=3)
+        self.quite_button = Button(self.master, text='Quit', width='10', command=self.close_my_app)
+        self.quite_button.grid(row=5, column=3)
         print(self.selected_time)
 
-        l1=Label(self.master,text='Select time (how often to remind you)')
-        l1.grid(row=1, column=1)
-        self.timelist = Listbox(self.master, width='20',height='5')
-        self.timelist.grid(row=2,column=0,rowspan=6,columnspan=2)
-        self.timelist.insert(self.selected_time,"10 minutes")
-        self.timelist.insert(self.selected_time,"30 minutes")
-        self.timelist.insert(self.selected_time,"60 minutes")
+        self.l1 = Label(self.master, text='Select time (how often to remind you)')
+        self.l1.grid(row=1, column=1)
+
+        self.label_text = StringVar()
+        self.l2 = Label(self.master, textvariable=self.label_text)
+        self.l2.grid(row=10, column=1, columnspan=2)
+
+        self.timelist = Listbox(self.master, width='35', height='7')
+
+        self.timelist.grid(row=2, column=0, rowspan=6, columnspan=2)
+
+        self.timelist.insert(self.selected_time, "5 minutes")
+
+        self.timelist.insert(self.selected_time, "10 minutes")
+
+        self.timelist.insert(self.selected_time, "12 minutes")
 
         self.timelist.bind('<<ListboxSelect>>', self.get_selected_row)
 
         self.playing = True
 
     def start_voice(self):
-            self.playing = True
-            self.play_voice()
+
+        self.playing = True
+        self.play_voice()
+        self.label_text.set('')
 
     def play_voice(self):
-
 
         def run():
 
@@ -58,18 +68,23 @@ class PlayVoice:
                     break
 
         thread = threading.Thread(target=run)
+        thread.daemon = True
         thread.start()
-
+        self.start_button.config(state='disabled')
+        self.select_button.config(state='disabled')
 
     def stop_voice(self):
 
         self.selected_time = 0
         self.playing = False
+        self.start_button.config(state='active')
+        self.select_button.config(state='active')
+        self.label_text.set('')
 
     def close_my_app(self):
 
-        self.exit=messagebox.askokcancel("Exit", "Are you sure you want to quit?")
-        if self.exit == True:
+        self.exit = messagebox.askokcancel("Exit", "Are you sure you want to quit?")
+        if self.exit:
             self.selected_time = 0
             self.stop_voice()
             self.master.destroy()
@@ -78,14 +93,15 @@ class PlayVoice:
             pass
 
     def select_time(self):
-        pass
+        self.start_button.config(state='active')
+        self.label_text.set("Time has been selected, press Start to continue")
 
     def get_selected_row(self, event):
 
-        index=self.timelist.curselection()[0]
+        index = self.timelist.curselection()[0]
         self.selected_time_raw = self.timelist.get(index)
-        self.selected_time=int(self.selected_time_raw.split()[0])
-
+        self.selected_time = int(self.selected_time_raw.split()[0])
+        print(self.selected_time)
 
     def close(self):
         self.selected_time = 0
@@ -96,11 +112,9 @@ class PlayVoice:
 
 if __name__ == '__main__':
 
-
     reminder_window = Tk()
     reminder_window.title("Straighten Your Back Reminder")
-    reminder_window.geometry("400x200")
+    reminder_window.geometry("500x200")
     reminder_window.configure(background='lightgray')
-    f=PlayVoice(reminder_window)
+    PlayVoice(reminder_window)
     reminder_window.mainloop()
-
