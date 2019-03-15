@@ -24,7 +24,7 @@ pip install pydub
 ## Run this project:
 
 ```
-python web_crawler.py
+python syb.py
 
 ```
 
