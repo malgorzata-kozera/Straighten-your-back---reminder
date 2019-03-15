@@ -26,7 +26,6 @@ class PlayVoice:
 
         self.quit_button = Button(self.master, text='Quit', width='10', command=self.close_my_app)
         self.quit_button.grid(row=5, column=3)
-        print(self.selected_time)
 
         self.l1 = Label(self.master, text='Select time (how often to remind you)')
         self.l1.grid(row=1, column=1)
@@ -102,7 +101,7 @@ class PlayVoice:
         index = self.timelist.curselection()[0]
         self.selected_time_raw = self.timelist.get(index)
         self.selected_time = int(self.selected_time_raw.split()[0])*60
-        print(self.selected_time)
+
 
     def close(self):
         """method to close app by pressing 'x' """
