@@ -81,7 +81,6 @@ class PlayVoice:
 
     def close_my_app(self):
         """method to close app by pressing 'quit button' """
-
         self.exit = messagebox.askokcancel("Exit", "Are you sure you want to quit?")
         if self.exit:
             self.selected_time = 0
