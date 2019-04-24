@@ -75,7 +75,7 @@ class PlayVoice:
 
         self.selected_time = 0
         self.playing = False
-        self.start_button.config(state='active')
+        self.start_button.config(state='disabled')
         self.select_button.config(state='active')
         self.label_text.set('')
 
@@ -93,7 +93,7 @@ class PlayVoice:
     def select_time(self):
         """method to select a different time of alarm """
         self.start_button.config(state='active')
-        self.label_text.set("Time has been selected, press Start to continue")
+        self.label_text.set(f"Time {int(self.selected_time/60)} min has been selected, press Start to continue")
 
     def get_selected_row(self, event):
 
