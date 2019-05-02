@@ -1,2 +1,6 @@
 .idea
 venv
+build
+dist
+__pycache__
+syb.spec

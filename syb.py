@@ -113,6 +113,7 @@ class PlayVoice:
 if __name__ == '__main__':
 
     reminder_window = Tk()
+    reminder_window.resizable(False, False)
     reminder_window.title("Straighten Your Back Reminder")
     reminder_window.geometry("500x200")
     reminder_window.configure(background='lightgray')
